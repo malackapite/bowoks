@@ -25,8 +25,10 @@ class CopyController extends Controller
 
     public function update(Request $request, $id){
         $copy = Copy::find($id);
-        $copy->user_id = $request->user_id;
         $copy->book_id = $request->book_id;
+        $copy->hardcovered = $request->hardcovered;
+        $copy->publication = $request->publication;
+        $copy->status = $request->status;
         $copy->save();
         //még nem létezik...
         return redirect('/copy/list');
@@ -34,8 +36,10 @@ class CopyController extends Controller
 
     public function store(Request $request){
         $copy = new Copy();
-        $copy->user_id = $request->user_id;
         $copy->book_id = $request->book_id;
+        $copy->hardcovered = $request->hardcovered;
+        $copy->publication = $request->publication;
+        $copy->status = $request->status;
         $copy->save();
         //még nem létezik...
         return redirect('/copy/list');

@@ -12,8 +12,10 @@ class Copy extends Model
     protected  $primaryKey = 'copy_id';
 
     protected $fillable = [
-        'user_id',
         'book_id',
+        "hardcovered",
+        "publication",
+        "status"
     ];
 
     public function user()

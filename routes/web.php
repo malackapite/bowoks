@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CopyController;
+use App\Http\Controllers\LendingController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserContoller;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,23 +21,19 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/api/book', [BookController::class, 'index']);
-Route::get('/api/book/{id}', [BookController::class, 'show']);
-Route::put('/api/book/{id}', [BookController::class, 'update']);
-Route::post('/api/book', [BookController::class, 'store']);
-Route::delete('/api/book/{id}', [BookController::class, 'destroy']);
-//view útvonalak
-Route::get('/book/new', [BookController::class, "newView"]);
-Route::get('/book/list', [BookController::class, "listView"]);
-Route::get('/book/edit/{id}', [BookController::class, "editView"]);
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/api/copy', [CopyController::class, 'index']);
-Route::get('/api/copy/{id}', [CopyController::class, 'show']);
-Route::put('/api/copy/{id}', [CopyController::class, 'update']);
-Route::post('/api/copy', [CopyController::class, 'store']);
-Route::delete('/api/copy/{id}', [CopyController::class, 'destroy']);
-//view útvonalak
-Route::get('/copy/new', [CopyController::class, "newView"]);
-Route::get('/copy/list', [CopyController::class, "listView"]);
-Route::get('/copy/edit/{id}', [CopyController::class, "editView"]);
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+    Route::apiResource('/api/copies', CopyController::class);
+    Route::apiResource('/api/books', BookController::class);
+    Route::apiResource('/api/users', UserContoller::class);
+
+require __DIR__.'/auth.php';
