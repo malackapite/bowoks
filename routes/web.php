@@ -31,6 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+Route::middleware('auth.basic')->group(function () {
+    Route::patch('/api/password_modify/{id}', [UserContoller::class, "updatePassword"]);
+    Route::get('/api/lendings', [UserContoller::class, "userLendings"]);
+    Route::get('/api/hanykonyv', [UserContoller::class, "hanykonyv"]);
+    Route::get('/api/blahaj', [UserContoller::class, "blåhaj"]);
+});
 
     Route::apiResource('/api/copies', CopyController::class);
     Route::apiResource('/api/books', BookController::class);

@@ -24,6 +24,12 @@ return new class extends Migration
             "user_id"=>1,
             "copy_id"=>2,
         ]);
+
+        Lending::create([
+            "user_id"=>1,
+            "copy_id"=>2,
+            "start" => "1756-10-10 08:47:20"
+        ]);
         
         Lending::create([
             "user_id"=>2,

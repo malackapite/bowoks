@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lending;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Termwind\Components\Raw;
 
 class UserContoller extends Controller
 {
@@ -56,5 +60,34 @@ class UserContoller extends Controller
 
     public function listView(){
         return view("user.list", ["books" => User::all()]);
+    }
+
+    public function updatePassword(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            "password" => 'string|min:3|max:50'
+        ]);
+
+        // $validator = Validator::make($request->all(), [
+        //     "password" => array('required', 'regex:/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[^\s]{8,}$/')
+        //          ]);
+
+        if ($validator->fails()) {
+            return response()->json(["message" => $validator->errors()->all()], 400);
+        }
+        $user = User::where("id", $id)->update([
+            "password" => Hash::make($request->password),
+        ]);
+        return response()->json(["user" => $user]);
+    }
+        
+    public function userLendings(){
+        $user = Auth::user();
+        return User::with('lending')->where('id','=',$user->id)->get();
+    }
+
+    public function hanykonyv(){
+        $user = Auth::user();
+        return User::with('lending')->where('id','=',$user->id)->count();
     }
 }

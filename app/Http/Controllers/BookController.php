@@ -52,4 +52,8 @@ class BookController extends Controller
     public function listView(){
         return view("book.list", ["books" => Book::all()]);
     }
+
+    public function bookCopy(){
+        return Book::with('copy')->get();
+    }
 }
